@@ -36,5 +36,5 @@ python setup.py install
 
 ## Running examples
 
- - For generic examples, see `simple.py`, `simple2.py`, and `simple3.py` in the `viff` folder. Edit and run test.sh to run these examples
+ - For generic examples, see `simple.py`, `simple2.py`, and `simple3.py` in the `viff` directory. Edit and run `test.sh` from the `bin` directory to run these examples
  - For the "aggregate" and "logrank" examples from the paper, edit and run test_anon.sh and test_stat.sh, respectively
