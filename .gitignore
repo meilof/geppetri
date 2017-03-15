@@ -92,3 +92,9 @@ ENV/
 
 # Rope project settings
 .ropeproject
+*.a
+*.def
+*.save-failed
+*.layout
+*.o
+*.script

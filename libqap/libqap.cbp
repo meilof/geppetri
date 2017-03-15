@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="libqap" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Script file="lib_finder.script" />
+			<Target title="Debug">
+				<Option output="../bin/qap" imp_lib="bin/Debug/libqap.a" def_file="bin/Debug/libqap.def" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../bin" />
+				<Option object_output="obj/Debug/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-std=c++11" />
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="-fPIC" />
+					<Add directory="../ate-pairing" />
+					<Add directory="../ate-pairing/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-lm -lzm -lgmpxx -lgmp -m64" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/qap" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Release/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Linker>
+			<Add directory="../ate-pairing/lib" />
+		</Linker>
+		<Unit filename="base.cpp" />
+		<Unit filename="base.h" />
+		<Unit filename="fft.cpp" />
+		<Unit filename="fft.h" />
+		<Unit filename="key.cpp" />
+		<Unit filename="key.h" />
+		<Unit filename="modp.cpp" />
+		<Unit filename="modp.h" />
+		<Unit filename="proof.cpp" />
+		<Unit filename="proof.h" />
+		<Unit filename="prove.cpp" />
+		<Unit filename="prove.h" />
+		<Unit filename="qap.cpp" />
+		<Unit filename="qap.h" />
+		<Unit filename="qap2key.cpp" />
+		<Unit filename="qap2key.h" />
+		<Unit filename="test_point.hpp" />
+		<Unit filename="verify.cpp" />
+		<Unit filename="verify.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

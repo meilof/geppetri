@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="Workspace">
+		<Project filename="libqap/libqap.cbp" />
+		<Project filename="tools/qapinput/qapinput.cbp"><Depends filename="libqap/libqap.cbp" /></Project>
+		<Project filename="tools/qapinput_surv/qapinput_surv.cbp"><Depends filename="libqap/libqap.cbp" /></Project>
+		<Project filename="tools/qapgen/qapgen.cbp"><Depends filename="libqap/libqap.cbp" /></Project>
+		<Project filename="tools/qapgenf/qapgenf.cbp"><Depends filename="libqap/libqap.cbp" /></Project>
+		<Project filename="tools/qapprove/qapprove.cbp"><Depends filename="libqap/libqap.cbp" /></Project>
+		<Project filename="tools/qapprove_stat/qapprove_stat.cbp"><Depends filename="libqap/libqap.cbp" /></Project>
+		<Project filename="tools/qapprove_anon/qapprove_anon.cbp"><Depends filename="libqap/libqap.cbp" /></Project>
+		<Project filename="tools/qapcombine/qapcombine.cbp"><Depends filename="libqap/libqap.cbp" /></Project>
+		<Project filename="tools/qapcombine_anon/qapcombine_anon.cbp"><Depends filename="libqap/libqap.cbp" /></Project>
+		<Project filename="tools/qapcombine_stat/qapcombine.cbp"><Depends filename="libqap/libqap.cbp" /></Project>
+		<Project filename="tools/qapver/qapver.cbp"><Depends filename="libqap/libqap.cbp" /></Project>
+		<Project filename="tools/qapver_anon/qapver_anon.cbp"><Depends filename="libqap/libqap.cbp" /></Project>
+		<Project filename="tools/qapver_stat/qapver.cbp"><Depends filename="libqap/libqap.cbp" /></Project>
+	</Workspace>
+</CodeBlocks_workspace_file>

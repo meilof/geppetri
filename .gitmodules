@@ -1,0 +1,10 @@
+[submodule "tueviff-fp-inlinecb"]
+	path = tueviff-fp-inlinecb
+	url = https://github.com/meilof/tueviff
+	branch = fp-inlinecb
+[submodule "ate-pairing"]
+	path = ate-pairing
+	url = https://github.com/herumi/ate-pairing
+[submodule "xbyak"]
+	path = xbyak
+	url = https://github.com/herumi/xbyak

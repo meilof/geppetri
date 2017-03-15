@@ -1,0 +1,19 @@
+[main]
+
+# setting 1: block size=1
+file=btrialm
+ninputters=2
+npoints=175
+perblock=1
+
+## setting 2: block size=25
+#file=btrialm
+#ninputters=2
+#npoints=175
+#perblock=25
+
+## setting 3: block size=175
+#file=btrialm
+#ninputters=2
+#npoints=175
+#perblock=175
