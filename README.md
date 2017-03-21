@@ -6,8 +6,16 @@ Implementation of the system described in [this paper](https://eprint.iacr.org/2
 
  - A Unix-like environment (e.g., Linux, mingw-w64)
  - GCC compiler, GMP development libraries
- - CodeBlocks IDE
+ - CodeBlocks IDE (optional, for re-building on Windows)
  - Python 2.7 with Twisted and GMPY
+ 
+ For instance, on Amazon Linux the following commands install the required dependencies:
+ 
+ ```
+ sudo yum install gcc-c++ gmp-devel
+ pip install --upgrade pip
+ sudm pip install twisted gmpy scipy
+ ```
 
 ## Installation instructions
 
@@ -25,7 +33,9 @@ cd ate-pairing
 make SUPPORT_SNARK=1
 ```
 
- - Compile the C++ library and tools by opening `qaps.workspace` in CodeBlocks and choosing "Rebuild Workspace" (on Windows, binaries are included so this step is optional)
+ - On Unix, compile the C++ library and tools by running run ``make`` from the main directory
+ 
+ - On Windows (64-bits), binaries are included so building is not necessary; to re-build, open `qaps.workspace` in CodeBlocks and choosing "Rebuild Workspace" (also works on Unix)
 
  - Install our customized VIFF version:
  
