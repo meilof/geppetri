@@ -30,7 +30,7 @@ make SUPPORT_SNARK=1
  - Install our customized VIFF version:
  
 ```
- cd tueviff-fp-inlinecb
+cd tueviff-fp-inlinecb
 python setup.py install
 ```
 
