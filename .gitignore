@@ -98,3 +98,10 @@ ENV/
 *.layout
 *.o
 *.script
+viff/data/geppblk.in
+*.comm
+*.in1
+viff/data/geppeq
+viff/data/geppeq.main
+*.ek
+viff/data/geppmasterkey
