@@ -1,5 +1,7 @@
+include ../../commons.mk
+
 qapprove: provemain.o
-	g++ -o $@ $< -L ../../libqap -L ../../ate-pairing/lib -lqap -lm -lzm -lgmpxx -lgmp
+	g++ -o $@ $< $(LDFLAGS)
 
 %.o: %.cpp
-	g++ -std=c++11 -I ../.. -I ../../ate-pairing/include -c -o $@ $<
+	g++ $(CFLAGS) -c -o $@ $<
