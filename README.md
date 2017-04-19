@@ -48,3 +48,7 @@ python setup.py install
 
  - For generic examples, see `simple.py`, `simple2.py`, and `simple3.py` in the `viff` directory. Edit and run `test.sh` from the `bin` directory to run these examples
  - For the "aggregate" and "logrank" examples from the paper, edit and run test_anon.sh and test_stat.sh, respectively
+
+## Acknowledgements
+
+This work is part of projects that have received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No 643964 (SUPERCLOUD) and No 731583 (SODA).
