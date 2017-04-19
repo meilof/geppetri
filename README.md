@@ -51,4 +51,4 @@ python setup.py install
 
 ## Acknowledgements
 
-This work is part of projects that have received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No 643964 (SUPERCLOUD) and No 731583 (SODA).
+This work is part of projects that have received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No 643964 ([SUPERCLOUD](https://supercloud-project.eu/)) and No 731583 ([SODA](https://www.soda-project.eu/)).
