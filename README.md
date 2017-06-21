@@ -2,6 +2,8 @@
 
 Implementation of the system described in [this paper](https://eprint.iacr.org/2017/013)
 
+*Remark* This is an implementation of the proceedings version of the paper, that has a bug in the way constant values are handled. The current eprint version of the paper corrects this. This will be fixed in the next release of this prototype.
+
 ## Prerequisites
 
  - A Unix-like environment (e.g., Linux, mingw-w64)
