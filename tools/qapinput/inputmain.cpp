@@ -49,7 +49,7 @@ using namespace std;
 int main(int argc, char** argv) {
     libqap_init();
 
-    string keyfile = "../viff/data/geppmasterkey";
+    string keyfile = "geppmasterkey.ver";
     int inputter = 1;
 
     while (1) {

@@ -61,18 +61,18 @@ template<typename X> X readfromfile(string fname) {
 int main (int argc, char **argv) {
     libqap_init();
 
-    string keyfile = "../viff/data/geppmasterkey";
+    string keyfile = "geppmasterkey";
     masterkey mkey = readfromfile<masterkey>(keyfile);
 
-    string wires = "../viff/data/geppout";
+    string wires = "geppout";
     wirevalt wirevals = readfromfile<wirevalt>(wires);
 
-    string qapfileb = "../viff/data/geppeq.summ";
-    string qapkeyb  = "../viff/data/geppeq.summ.vk";
+    string qapfileb = "geppeq.summ";
+    string qapkeyb  = "geppeq.summ.vk";
     qap theqapb = readfromfile<qap>(qapfileb);
     qapvk vkb = readfromfile<qapvk>(qapkeyb);
 
-    string prooffile = "../viff/data/gepproof";
+    string prooffile = "gepproof";
 
     datablock dfinin;
 
@@ -92,8 +92,8 @@ int main (int argc, char **argv) {
 
         for (int j = 0; j < bpersumm; j++) {
             stringstream blk; blk << "input" << j; string blks = blk.str();
-            stringstream nm1; nm1 << "../viff/data/geppblk.input.1.comm." << (i*bpersumm+j+1);
-            stringstream nm2; nm2 << "../viff/data/geppblk.input.2.comm." << (i*bpersumm+j+1);
+            stringstream nm1; nm1 << "geppblk.input.1.comm." << (i*bpersumm+j+1);
+            stringstream nm2; nm2 << "geppblk.input.2.comm." << (i*bpersumm+j+1);
             datablock din1 = readfromfile<datablock>(nm1.str());
             datablock din2 = readfromfile<datablock>(nm2.str());
             cout << " in " << j << ",1 "; cout << qapblockvalid(mkey, din1, 0);

@@ -28,6 +28,8 @@
 
 from optparse import OptionParser
 
+import sys, time
+
 import viff.boost
 viff.boost.install()
 from viff.runtime import create_runtime, Runtime, make_runtime_class
@@ -69,6 +71,7 @@ def run(runtime):
     nblocks = (npoints+perblock-1)/perblock
     
     print "Welcome"
+    start = time.time()
     
     shs = vc_read_additive_shares(runtime, runtime.Zp, "input", range(1,ninputters+1))
     
@@ -110,6 +113,9 @@ def run(runtime):
     vc_declare_block(runtime, [dv,ev,vv], rndcur, "input")
     chi = fin(runtime, dv, ev, vv)
     
+    print "Now here", time.time()-start
+    sys.stdout.flush()
+    
     chis = chi.ensure_single(runtime)
     chio = yield chis.open()
     chio = runtime.get_value(chio)
@@ -117,7 +123,8 @@ def run(runtime):
     
     vc_output_open(runtime, vc_declare_block(runtime, [chis], VcShare.random(runtime), "output"))
     
-    print "Done."
+    print "Done.", time.time()-start
+    sys.stdout.flush()
 
         
 # global KM config

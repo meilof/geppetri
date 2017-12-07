@@ -57,22 +57,22 @@ template<typename X> X readfromfile(string fname) {
 int main (int argc, char **argv) {
     libqap_init();
 
-    string keyfile  = "../viff/data/geppmasterkey";
+    string keyfile  = "geppmasterkey";
     string wires    = argv[2];
     masterkey mkey = readfromfile<masterkey>(keyfile);
     wirevalt wirevals = readfromfile<wirevalt>(wires);
 
 //    cerr << "Reading for block..." << endl;
 
-    string qapfileb = "../viff/data/geppeq.block";
-    string qapkeyb  = "../viff/data/geppeq.block.ek";
+    string qapfileb = "geppeq.block";
+    string qapkeyb  = "geppeq.block.ek";
     qap theqapb = readfromfile<qap>(qapfileb);
     qapek ekb = readfromfile<qapek>(qapkeyb);
 
 //    cerr << "Reading for fin..." << endl;
 
-    string qapfilef = "../viff/data/geppeq.fin";
-    string qapkeyf  = "../viff/data/geppeq.fin.ek";
+    string qapfilef = "geppeq.fin";
+    string qapkeyf  = "geppeq.fin.ek";
     qap theqapf = readfromfile<qap>(qapfilef);
     qapek ekf = readfromfile<qapek>(qapkeyf);
 

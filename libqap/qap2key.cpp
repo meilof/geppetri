@@ -145,6 +145,10 @@ void qap2key(const qap& theqap, const masterkey& mk, modp& s, qapek& ret1, qapvk
     int cur = 0;
     for (auto const& eq: theqap.eqs) interpolate(lagcofs[cur++], eq, vis, wis, yis);
 
+    ret2.constwire.g_rvvk = g10;
+    ret2.constwire.g_rwwk = g20;
+    ret2.constwire.g_ryyk = g10;
+
     // generate evaluation keys for all values
     unordered_set<string> done = unordered_set<string>();
     for (map<string,modp>::iterator iter = vis.begin(); iter != yis.end(); ) {
@@ -154,16 +158,23 @@ void qap2key(const qap& theqap, const masterkey& mk, modp& s, qapek& ret1, qapvk
         if (done.find(iter->first) == done.end()) {
             done.insert(iter->first);
 
-            wireek ek;
             modp& vval = vis[iter->first], wval = wis[iter->first], yval = yis[iter->first];
-            ek.g_rvvk   = g1^(rv*vval);
-            ek.g_rwwk   = g2^(rw*wval);
-            ek.g_ryyk   = g1^(ry*yval);
-            ek.g_rvavvk = g2^(rvav*vval);
-            ek.g_rwawwk = g1^(rwaw*wval);
-            ek.g_ryayyk = g2^(ryay*yval);
-            ek.g_rvvkrwwkryyk = g1^((rv*vval+rw*wval+ry*yval)*beta);
-            ret1.wires[iter->first] = ek;
+
+            if (iter->first == "one") {
+                ret2.constwire.g_rvvk = g1^(rv*vval);
+                ret2.constwire.g_rwwk = g2^(rw*wval);
+                ret2.constwire.g_ryyk = g1^(ry*yval);
+            } else {
+                wireek ek;
+                ek.g_rvvk   = g1^(rv*vval);
+                ek.g_rwwk   = g2^(rw*wval);
+                ek.g_ryyk   = g1^(ry*yval);
+                ek.g_rvavvk = g2^(rvav*vval);
+                ek.g_rwawwk = g1^(rwaw*wval);
+                ek.g_ryayyk = g2^(ryay*yval);
+                ek.g_rvvkrwwkryyk = g1^((rv*vval+rw*wval+ry*yval)*beta);
+                ret1.wires[iter->first] = ek;
+            }
         }
 
         iter++;

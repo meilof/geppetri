@@ -47,11 +47,12 @@ using namespace bn;
 int main(int argc, char** argv) {
     libqap_init();
 
-    int ninp = 1, logd = 10;
+    int ninp = 1, logd = 10, smallsize = 0;
 
     while (1) {
         static struct option long_options[] = {
           {"inputters", required_argument, NULL, 'i' },
+          {"smallsize", required_argument, NULL, 'z' },
           {"size",      required_argument, NULL, 's' },
           {"help",      no_argument,       NULL, 'h' },
           {0, 0, 0, 0}
@@ -67,6 +68,10 @@ int main(int argc, char** argv) {
         case 'i':
             ninp = atoi(optarg);
             printf("Number of inputters %d\n", ninp);
+            break;
+        case 'z':
+            smallsize = atoi(optarg);
+            printf("Small master key size %d\n", smallsize);
             break;
         case 's':
             logd = atoi(optarg);
@@ -88,13 +93,19 @@ int main(int argc, char** argv) {
 
     modp s;
 
-    ofstream mkeyfile("../viff/data/geppmasterkey");
+    ofstream mkeyfile("geppmasterkey");
     masterkey mk;
     generate_master_key(nroots, ninp, s, mk);
     mkeyfile << mk;
     mkeyfile.close();
 
-    ofstream msk("../viff/data/geppmastersk");
+    if (smallsize != 0) {
+        ofstream mkeyfile("geppmasterkey.ver");
+        projectmk(mkeyfile, mk, smallsize+1);
+        mkeyfile.close();
+    }
+
+    ofstream msk("geppmastersk");
     msk << s;
     msk.close();
 

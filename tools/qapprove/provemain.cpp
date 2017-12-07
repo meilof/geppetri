@@ -57,15 +57,15 @@ template<typename X> X readfromfile(string fname) {
 int main (int argc, char **argv) {
     libqap_init();
 
-    string keyfile  = "../viff/data/geppmasterkey";
+    string keyfile  = "geppmasterkey";
     masterkey mkey = readfromfile<masterkey>(keyfile);
-    string wires    = (argc >= 2 ? argv[1] : "../viff/data/geppval");
+    string wires    = (argc >= 2 ? argv[1] : "geppval");
     wirevalt wirevals = readfromfile<wirevalt>(wires);
 
     map<string,qap> qaps;
     map<string,qapek> qapeks;
 
-    string schedf = "../viff/data/geppeq.schedule";
+    string schedf = "geppeq.schedule";
     ifstream sched(schedf);
 
     map<string,string> qap2type;
@@ -84,7 +84,7 @@ int main (int argc, char **argv) {
 
             if (qaps.find(type) == qaps.end()) {
                 cerr << "Reading QAP: " << type << endl;
-                stringstream ss; ss << "../viff/data/geppeq." << type;
+                stringstream ss; ss << "geppeq." << type;
                 qaps[type] = readfromfile<qap>(ss.str());
                 ss << ".ek"; qapeks[type] = readfromfile<qapek>(ss.str());
             }
@@ -93,19 +93,16 @@ int main (int argc, char **argv) {
             qapek& theek = qapeks[type];
 
             cerr << "Proving " << name << " (" << type << ")" << endl;
-            qapproof proof = qapprove(mkey, theqap, theek, wirevals, name, false);
+            qapproof proof = qapprove(mkey, theqap, theek, wirevals, name, true);
 
             for (auto const& it: theek.blocks)
                 proof.blocks[it.first] = qapblockproof(mkey, qaps[type].blocks[it.first], it.second, wirevals, name);
 
             cout << proof;
-        } else if (tok=="[input]") {
+        } else if (tok=="[external]") {
             string fun; sched >> fun;
             string type = qap2type[fun];
             string blk; sched >> blk;
-            string fln; sched >> fln;
-
-            //cout << qapblockproof(mkey, qaps[type].blocks[blk], qapeks[type].blocks[blk], wirevals, fun) << endl;
         } else if (tok=="[glue]") {
             string fun1; sched >> fun1;
             string type1 = qap2type[fun1];
@@ -115,15 +112,6 @@ int main (int argc, char **argv) {
             string blk2; sched >> blk2;
 
             cout << buildblock(mkey, 0, qaps[type1].blocks[blk1], wirevals, fun1);
-            //cout << qapblockproof(mkey, qaps[type1].blocks[blk1], qapeks[type1].blocks[blk1], wirevals, fun1) << endl;
-            //cout << qapblockproof(mkey, qaps[type2].blocks[blk2], qapeks[type2].blocks[blk2], wirevals, fun2) << endl;
-        } else if (tok=="[output]") {
-            string fun; sched >> fun;
-            string type = qap2type[fun];
-            string blk; sched >> blk;
-            string tmp; getline(sched, tmp);
-
-            //cout << qapblockproof(mkey, qaps[type].blocks[blk], qapeks[type].blocks[blk], wirevals, fun) << endl;
         } else {
             cerr << "*** Unrecognized token: " << tok << endl;
         }

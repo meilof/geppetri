@@ -55,6 +55,8 @@ class masterkey {
     vector<vector<Ec2>> g_rcalcs;
 };
 
+std::ostream& projectmk(std::ostream& os, const masterkey& x, unsigned int maxl);
+
 std::ostream& operator<<(std::ostream& os, const masterkey& x);
 
 std::istream& operator>>(std::istream& is, masterkey& x);
@@ -92,6 +94,8 @@ public:
 
 class qapvk {
 public:
+    wirevk constwire;
+
     Ec2 g2alv;
     Ec1 g1alw;
     Ec2 g2aly;

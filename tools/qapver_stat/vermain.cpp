@@ -61,23 +61,23 @@ template<typename X> X readfromfile(string fname) {
 int main (int argc, char **argv) {
     libqap_init();
 
-    string keyfile = "../viff/data/geppmasterkey";
+    string keyfile = "geppmasterkey";
     masterkey mkey = readfromfile<masterkey>(keyfile);
 
-    string wires = "../viff/data/geppout";
+    string wires = "geppout";
     wirevalt wirevals = readfromfile<wirevalt>(wires);
 
-    string qapfileb = "../viff/data/geppeq.block";
-    string qapkeyb  = "../viff/data/geppeq.block.vk";
+    string qapfileb = "geppeq.block";
+    string qapkeyb  = "geppeq.block.vk";
     qap theqapb = readfromfile<qap>(qapfileb);
     qapvk vkb = readfromfile<qapvk>(qapkeyb);
 
-    string qapfilef = "../viff/data/geppeq.fin";
-    string qapkeyf  = "../viff/data/geppeq.fin.vk";
+    string qapfilef = "geppeq.fin";
+    string qapkeyf  = "geppeq.fin.vk";
     qap theqapf = readfromfile<qap>(qapfilef);
     qapvk vkf; ifstream fl2(qapkeyf); fl2 >> vkf; fl2.close();
 
-    string prooffile = "../viff/data/gepproof";
+    string prooffile = "gepproof";
 
     datablock dfinin;
 
@@ -90,8 +90,8 @@ int main (int argc, char **argv) {
         datablock datab;
         fl3 >> proofb >> datab;
 
-        stringstream nm1; nm1 << "../viff/data/geppblk.input.1.comm." << (i+1);
-        stringstream nm2; nm2 << "../viff/data/geppblk.input.2.comm." << (i+1);
+        stringstream nm1; nm1 << "geppblk.input.1.comm." << (i+1);
+        stringstream nm2; nm2 << "geppblk.input.2.comm." << (i+1);
         datablock din1 = readfromfile<datablock>(nm1.str());
         datablock din2 = readfromfile<datablock>(nm2.str());
 

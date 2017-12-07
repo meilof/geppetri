@@ -134,10 +134,12 @@ void computevwyval(const vector<qapeq>& eqs,
     int ix = 0;
     for (auto const& eq: eqs) {
         // TODO: slight optimization: if v or w is empty, then no need to evaluate any of them!
-        for (auto const& vcur: eq.v) vval[ix]+=vcur.co*vals.at(prefix+"/"+vcur.te);
-        for (auto const& wcur: eq.w) wval[ix]+=wcur.co*vals.at(prefix+"/"+wcur.te);
-        for (auto const& ycur: eq.y) yval[ix]+=ycur.co*vals.at(prefix+"/"+ycur.te);
-        if (check && vval[ix]*wval[ix] != yval[ix]) cerr << "*** Eq not sat @ " << ix << ": " << vval[ix] << "*" << wval[ix] << "=" << vval[ix]*wval[ix] << " != " << yval[ix] << endl;
+        for (auto const& vcur: eq.v) vval[ix]+=vcur.co*(vcur.te=="one"?1:vals.at(prefix+"/"+vcur.te));
+        for (auto const& wcur: eq.w) wval[ix]+=wcur.co*(wcur.te=="one"?1:vals.at(prefix+"/"+wcur.te));
+        if (check || eq.v.size()!=0 || eq.w.size()!=0) for (auto const& ycur: eq.y)
+            yval[ix]+=ycur.co*(ycur.te=="one"?1:vals.at(prefix+"/"+ycur.te));
+        if (check && vval[ix]*wval[ix] != yval[ix])
+            cerr << "*** Eq not satisfied @ " << (ix+1) << ": " << vval[ix] << "*" << wval[ix] << "=" << vval[ix]*wval[ix] << " != " << yval[ix] << endl;
         ix++;
     }
 }
@@ -255,9 +257,10 @@ qapproof qapprove(const masterkey& mkey, const qap& theqap, const qapek& ek, con
 
     // compute "h"
 
-    //cerr << "Compute h" << endl;
+    cerr << "Compute h " << check << endl;
 
-    ret.p_h = compute_h(mkey, sz, theqap, wirevals, prefix, check);
+
+    ret.p_h = compute_h(mkey, sz, theqap, wirevals, prefix, false);
 
     return ret;
 }

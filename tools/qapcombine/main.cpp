@@ -42,7 +42,7 @@ using namespace std;
 int main(int argc, char** argv) {
     libqap_init();
 
-    string schedf = "../viff/data/geppeq.schedule";
+    string schedf = "geppeq.schedule";
     ifstream sched(schedf);
 
     std::ifstream in1(argv[1]), in2(argv[2]), in3(argv[3]);

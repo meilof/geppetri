@@ -29,14 +29,14 @@
 # set to yes to do mpc
 mpc=yes
 
-# setting 1: block size=1
-script=kmstat.py
-file=btrialm
-lpb=1
-nblocks=175
-qapdeg=8
-nsumm=7
-bpers=25
+## setting 1: block size=1
+#script=kmstat.py
+#file=btrialm
+#lpb=1
+#nblocks=175
+#qapdeg=8
+#nsumm=7
+#bpers=25
 
 ## setting 2: block size=25
 #script=kmstat.py
@@ -47,14 +47,14 @@ bpers=25
 #nsumm=7
 #bpers=1
 
-## setting 3: block size=175
-#script=kmstat.py
-#file=btrialm
-#lpb=175
-#nblocks=1
-#qapdeg=15
-#nsumm=1
-#bpers=1
+# setting 3: block size=175
+script=kmstat.py
+file=btrialm
+lpb=175
+nblocks=1
+qapdeg=15
+nsumm=1
+bpers=1
 
 rm -f ../viff/data/*
 

@@ -29,5 +29,5 @@
 from viffvc.vcruntime import vc_init, vc_share_offline, vc_read_values
 import sys
 
-vc_init(None, "../viff/data/")
+vc_init(None, "")
 vc_share_offline(sys.argv[1], vc_read_values(sys.argv[2]), 1 if len(sys.argv)<4 else int(sys.argv[3]))

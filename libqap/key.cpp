@@ -42,14 +42,14 @@ using namespace bn;
 
 using namespace std;
 
-std::ostream& operator<<(std::ostream& os, const masterkey& x) {
-    os << "geppetri_masterkey [ " << x.g_s.size() << " " << x.g_als.size() << endl;
+std::ostream& projectmk(std::ostream& os, const masterkey& x, unsigned int maxl) {
+    os << "geppetri_masterkey [ " << maxl << " " << x.g_als.size() << endl;
 
     os << " ";
     for (unsigned int j = 0; j < x.g_als.size(); j++) os << " " << x.g_als[j];
     os << endl;
 
-    for (unsigned int i = 0; i < x.g_s.size(); i++) {
+    for (unsigned int i = 0; i < maxl; i++) {
         os << "  " << x.g_s[i] << " " << x.g2_s[i] << " " << x.g_rcs[i];
         for (unsigned int j = 0; j < x.g_als.size(); j++) os << " " << x.g_rcalcs[j][i];
         os << endl;
@@ -58,6 +58,10 @@ std::ostream& operator<<(std::ostream& os, const masterkey& x) {
     os << "]";
 
     return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const masterkey& x) {
+    return projectmk(os, x, x.g_s.size());
 }
 
 std::istream& operator>>(std::istream& is, masterkey& x) {
@@ -185,6 +189,7 @@ std::istream& operator>>(std::istream& in, blockek& x) {
 
 std::ostream& operator<<(std::ostream& os, const qapvk& x) {
     os << "geppetri_qapvk [" << endl <<
+          "  " << x.constwire << endl <<
           "  " << x.g2alv << endl <<
           "  " << x.g1alw << endl <<
           "  " << x.g2aly << endl <<
@@ -206,7 +211,7 @@ std::istream& operator>>(std::istream& in, qapvk& x) {
     char br; in >> br;
     if (br != '[') throw std::ios_base::failure((string("Bad qapvk: expected \"[\", got \"") + br + "\"").c_str());
 
-    in >> x.g2alv >> x.g1alw >> x.g2aly >> x.g2ryt >> x.g1bet >> x.g2bet;
+    in >> x.constwire >> x.g2alv >> x.g1alw >> x.g2aly >> x.g2ryt >> x.g1bet >> x.g2bet;
 
     string tok;
     while (!(in>>tok).eof() && tok!="" && tok!="]")

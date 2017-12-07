@@ -61,17 +61,15 @@ template<typename X> X readfromfile(string fname) {
 int main (int argc, char **argv) {
     libqap_init();
 
-    string keyfile  = "../viff/data/geppmasterkey";
+    string keyfile  = "geppmasterkey.ver";
     masterkey mkey = readfromfile<masterkey>(keyfile);
-    string wires    = "../viff/data/geppout";
-    wirevalt wirevals = readfromfile<wirevalt>(wires);
 
     map<string,qapvk> qapvks;
 
-    string schedf = "../viff/data/geppeq.schedule";
+    string schedf = "geppeq.schedule";
     ifstream sched(schedf);
 
-    string proofnm = "../viff/data/gepproof";
+    string proofnm = "gepproof";
     ifstream prooff(proofnm);
 
     map<string,string> qap2type;
@@ -91,24 +89,23 @@ int main (int argc, char **argv) {
 
             if (qapvks.find(type) == qapvks.end()) {
                 cerr << "Reading QAP vk: " << type << endl;
-                stringstream ss; ss << "../viff/data/geppeq." << type << ".vk";
+                stringstream ss; ss << "geppeq." << type << ".vk";
                 qapvks[type] = readfromfile<qapvk>(ss.str());
             }
 
             cerr << "Verifying " << name << " (" << type << ")" << " ";
             prooff >> proofs[name];
             cerr << qapver(qapvks[type], proofs[name]) << endl;
-        } else if (tok=="[input]") {
+        } else if (tok=="[external]") {
             string fun; sched >> fun;
             string type = qap2type[fun];
             string blk; sched >> blk;
-            string fln; sched >> fln;
 
-            stringstream nm; nm << "../viff/data/geppblk." << fln << ".comm";
+            stringstream nm; nm << "geppblk." << fun << "." << blk << ".comm";
             cerr << "Reading input block file " << nm.str() << endl;
             datablock din = readfromfile<datablock>(nm.str());
 
-            cerr << "Verifying input block " << fln << "<->" << fun << "." << blk << " ";
+            cerr << "Verifying input block " << fun << "." << blk << " ";
             cerr << qapblockvalid(mkey, din, 0) << " ";
             cout << qapblockver(mkey, din, qapvks[type].blocks[blk], proofs[fun].blocks[blk]) << endl;
         } else if (tok=="[glue]") {
@@ -125,29 +122,6 @@ int main (int argc, char **argv) {
             cerr << qapblockvalid(mkey, blk, 0) << " ";
             cerr << qapblockver(mkey, blk, qapvks[type1].blocks[blk1], proofs[fun1].blocks[blk1]) << " ";
             cerr << qapblockver(mkey, blk, qapvks[type2].blocks[blk2], proofs[fun2].blocks[blk2]) << endl;
-        } else if (tok=="[output]") {
-            string fun; sched >> fun;
-            string type = qap2type[fun];
-            string blk; sched >> blk;
-            string tmp; getline(sched, tmp); stringstream ss(tmp);
-
-            string trnd; ss >> trnd; modp rndval(wirevals[trnd]);
-
-            cerr << "Verifying output " << fun << "." << blk << ": ";
-
-            vector<modp> vals;
-            while (!ss.eof()) {
-                string tok;
-                ss >> tok;
-                cerr << wirevals[tok] << " ";
-                vals.push_back(modp(wirevals[tok]));
-            }
-
-            cerr << "? ";
-
-            datablock db = buildblock(mkey, 0, vals, rndval);
-
-            cerr << qapblockver(mkey, db, qapvks[type].blocks[blk], proofs[fun].blocks[blk]) << endl;
         } else {
             cerr << "*** Unrecognized token: " << tok << endl;
         }

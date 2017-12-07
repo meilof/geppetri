@@ -109,9 +109,9 @@ bool qapver(const qapvk& qvk, const qapproof& proof) {
     opt_atePairing(e3, proof.p_rwx, qvk.g1bet);
     if (e1!=(e2*e3)) { cerr << "*** beta check failed" << endl;  }
 
-    opt_atePairing(e1, proof.p_rwx, proof.p_rvx);
+    opt_atePairing(e1, qvk.constwire.g_rwwk + proof.p_rwx, qvk.constwire.g_rvvk + proof.p_rvx);
     opt_atePairing(e2, qvk.g2ryt, proof.p_h);
-    opt_atePairing(e3, g2, proof.p_ryx);
+    opt_atePairing(e3, g2, qvk.constwire.g_ryyk + proof.p_ryx);
     if (e1!=(e2*e3)) { cerr << "*** divisibility check failed" << endl;  }
 
     return true;

@@ -62,15 +62,17 @@ def vc_init(runtime = None, directory="data/", printeq=True):
     print "*** Initializing VC (data dir=" + directory + ")"
     
     vc_directory = directory
-    if vc_directory[-1]!="/": vc_directory = vc_directory + "/"
+    if vc_directory!="" and vc_directory[-1]!="/": vc_directory = vc_directory + "/"
     
     my_suffix = "" if runtime==None or runtime.__class__.__name__=="LocalRuntime" else str(runtime.id)
     
     vc_modulus = 21888242871839275222246405745257275088548364400416034343698204186575808495617 
     
     if runtime:        
-        if printeq: qap = open(vc_directory + "geppeq" + my_suffix, "w")
-        print >>qap, "# geppetri qap"
+        if printeq:
+            qap = open(vc_directory + "geppeq" + my_suffix, "w")
+            print >>qap, "# geppetri qap"
+            
         qapo = open(vc_directory + "geppout" + my_suffix, "w")
         print >>qapo, "# geppetri qap outputs"
         qapv = open(vc_directory + "geppval" + my_suffix, "w")
@@ -107,16 +109,20 @@ def vc_declare_block(runtime, vcs, rnd1, bn=None):
     rnd2 = VcShare.random(runtime)
     runtime.vc_counter[-1]+=1
     
-    print >>qap, "[ioblock]", runtime.vc_counter[0], bn, " ".join(map(lambda x: x.sig[0][1], [rnd1,rnd2]+vcs))
-    qap.flush()
+    if qap!=None:
+        print >>qap, "[ioblock]", runtime.vc_counter[0], bn, " ".join(map(lambda x: x.sig[0][1], [rnd1,rnd2]+vcs))
+        qap.flush()
     
     return (runtime.vc_counter[0],bn,vcs,rnd1,rnd2)
     
 def vc_import(runtime, (qap1,bn1,vcs1,rnd11,rnd12)):
     """ Import a VC block into a new context. Return list of shares and block information. """
     (qap2,bn2,vcs2,_,_) = vc_declare_block(runtime, [VcShare.from_share(runtime, x.sh) for x in vcs1], VcShare.from_share(runtime, rnd11.sh))
-    print >>qap, "[glue]", qap1, bn1, qap2, bn2
-    qap.flush()
+    
+    if qap!=None:
+        print >>qap, "[glue]", qap1, bn1, qap2, bn2
+        qap.flush()
+        
     return vcs2
 
 def vc_read_values(infile):
@@ -152,7 +158,9 @@ def vc_input_predist(runtime, blockname):
     vcs = map(importer, vals[:-1])
     rnd1 = importer(vals[-1])
     (qp,bn,_,_,_) = vc_declare_block(runtime, vcs, rnd1)
-    print >>qap, "[input]", qp, bn, blockname
+    if qap!=None:
+        print >>qap, "[input]", qp, bn, blockname
+        qap.flush()
     return vcs
 
 def vc_read_additive_shares(runtime, Zp, blockname, inputters):
@@ -189,8 +197,9 @@ def vc_output_open(runtime, (qp,bn,vcs,rnd1,rnd2)):
     """ Opens a given block as computation output. """
     vals = [vc.open() for vc in vcs]
     rnd1.open()
-    print >>qap, "[output]", qp, bn, " ".join(map(lambda x: x.sig[0][1], [rnd1]+vcs))
-    qap.flush()
+    if qap!=None:
+        print >>qap, "[output]", qp, bn, " ".join(map(lambda x: x.sig[0][1], [rnd1]+vcs))
+        qap.flush()
     return vals
     
 def vc_assert_mult(v,w,y):
@@ -333,7 +342,6 @@ class VcShare:
         
     def assert_zero(self):
         """ Assert that the present VcShare represents the value zero. """
-        global qap
         if qap!=None:
             print >>qap, "* =", self.strsig(), "."
             qap.flush()
@@ -341,21 +349,19 @@ class VcShare:
     def assert_positive(self, bl):
         """ Assert that the present VcShare represents a positive value, that
             is, a value in [0,2^bl] with bl the given bit length. """
-        global qap
-        
-        rt = self.sh.runtime
-        bits = rt.bit_decompose(self.sh, bl)
-        
-        # small optimization: instead of making vc shares for everything, we do things explicitly via the secret shares
-        rt.vc_counter[-1] += 1
-        sid = "/".join(map(str,rt.vc_counter[:])) 
-        def printwires(vals):
-            for (ix,val) in enumerate(vals):
-                print >>qapv, sid+"b"+str(ix)+":", val.value
-                qapv.flush()
-        gather_shares(bits).addCallback(printwires)
-            
         if qap!=None:
+            rt = self.sh.runtime
+            bits = rt.bit_decompose(self.sh, bl)
+        
+            # small optimization: instead of making vc shares for everything, we do things explicitly via the secret shares
+            rt.vc_counter[-1] += 1
+            sid = "/".join(map(str,rt.vc_counter[:])) 
+            def printwires(vals):
+                for (ix,val) in enumerate(vals):
+                    print >>qapv, sid+"b"+str(ix)+":", val.value
+                    qapv.flush()
+            gather_shares(bits).addCallback(printwires)
+            
             for i in range(bl): print >>qap, "1", sid+"b"+str(i), "* 1", self.constname(self.sh.runtime), "-1", sid+"b"+str(i), "= ."                           # all values are bits        
             print >>qap, self.strsig(), " ".join([str(-(2**i))+" "+sid+"b"+str(i) for i in xrange(len(bits))]), "* 1", self.constname(self.sh.runtime), "= ."   # bit decompositon is correct
             qap.flush()
@@ -387,11 +393,12 @@ class VcShare:
         rt = self.sh.runtime
         frc = VcShare.from_share(rt, rt.div(self.sh,other.sh))
         
-        # prove correctness of divisions
-        den=other.nofp(rt)
-        df=(2**self.sh.runtime.options.res)*self.nofp(rt)-frc.nofp(rt)*den  # division error: should be in [-den,+den]      
-        (2*den-df).assert_positive(40)                                      # bit decomposition proofs that value is positive
-        (den+df).assert_positive(40)                                        # bit decomposition proofs that value is positive
+        if qap!=None:
+            # prove correctness of divisions
+            den=other.nofp(rt)
+            df=(2**self.sh.runtime.options.res)*self.nofp(rt)-frc.nofp(rt)*den  # division error: should be in [-den,+den]      
+            (2*den-df).assert_positive(40)                                      # bit decomposition proofs that value is positive
+            (den+df).assert_positive(40)                                        # bit decomposition proofs that value is positive
         
         return frc
         
@@ -417,9 +424,10 @@ class VcShare:
         
         ret = VcShare.from_share(rt.eqz(self.sh))
         
-        m = VcShare.from_share(rt, rt.invert(self.sh+(1-ret.sh)))
-        vc_assert_mult(self, m, ret)
-        vc_assert_mult(self, VcShare.constant(rt, 1)-ret, VcShare.zero(rt))
+        if qap!=None:
+            m = VcShare.from_share(rt, rt.invert(self.sh+(1-ret.sh)))
+            vc_assert_mult(self, m, ret)
+            vc_assert_mult(self, VcShare.constant(rt, 1)-ret, VcShare.zero(rt))
                 
         return ret
     

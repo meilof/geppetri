@@ -33,11 +33,11 @@ p=21888242871839275222246405745257275088548364400416034343698204186575808495617
 
 vals = {}
 
-q1 = open("../viff/data/geppval1", "w")
-q2 = open("../viff/data/geppval2", "w")
-q3 = open("../viff/data/geppval3", "w")
+q1 = open("geppval1", "w")
+q2 = open("geppval2", "w")
+q3 = open("geppval3", "w")
 
-for ln in open("../viff/data/geppval", "r"):
+for ln in open("geppval", "r"):
   ln = ln.strip()
   if ln=="" or ln[0]=="#": continue
   (var,val) = ln.split(" ")

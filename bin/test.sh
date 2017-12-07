@@ -28,6 +28,8 @@
 
 #!/bin/bash
 
+TOOLS=../../bin/
+
 # set to yes to do mpc
 mpc=yes
 
@@ -43,25 +45,25 @@ mpc=yes
 script=simple3.py
 inputpref=simple3
 
+# make sure we are actually in the data directory
+rm -f ../data/*
 
-rm -f ../viff/data/*
-
-export LD_LIBRARY_PATH=.
-export PYTHONPATH=../viff
+export LD_LIBRARY_PATH=$TOOLS
 
 shopt -s nullglob
 
-./qapgen --size 8 --inputters 3
+$TOOLS/qapgen --size 8 --smallsize 128 --inputters 3
 
-for fl in ../viff/$inputpref-*.txt
+for fl in ../$inputpref-*.txt
 do
-    fl=${fl/\.\.\/viff\/$inputpref-/}
+    fl=${fl/\.\.\/$inputpref-/}
     fl=${fl/\.txt/}
-    python input.py $fl ../viff/$inputpref-$fl.txt
-    ./qapinput ../viff/data/geppblk.$fl > ../viff/data/geppblk.$fl.comm
+    echo "File is $fl"
+    PYTHONPATH=.. python $TOOLS/input.py $fl ../$inputpref-$fl.txt
+    $TOOLS/qapinput geppblk.$fl > geppblk.$fl.comm
 done
 
-cd ../viff
+cd ..
 
 if [ "$mpc" = "yes" ]
 then
@@ -73,38 +75,38 @@ else
   python $script player-1.ini --local
 fi
 
-cd ../bin
+cd data
 
 if [ "$mpc" = "yes" ]
 then
-  cp ../viff/data/geppeq1 ../viff/data/geppeq
-  cp ../viff/data/geppout1 ../viff/data/geppout
+  cp geppeq1 geppeq
+  cp geppout1 geppout
 fi
 
-python qapsplit.py ../viff/data/geppeq
+python $TOOLS/qapsplit.py geppeq
 
 # make missing input commitments
-for i in `python printinputs.py ../viff/data/geppeq.schedule`
+for i in `python $TOOLS/printinputs.py geppeq.schedule`
 do
-    if [ ! -f ../viff/data/$i.comm ]; then
-        ./qapinput ../viff/data/geppblk.$i > ../viff/data/geppblk.$i.comm
+    if [ ! -f $i.comm ]; then
+        $TOOLS/qapinput geppblk.$i > geppblk.$i.comm
     fi
 done
 
 # make computation proof
-for i in `cat ../viff/data/geppeq.qaplist`
+for i in `cat geppeq.qaplist`
 do
-    ./qapgenf ../viff/data/geppeq.$i
+    $TOOLS/qapgenf geppeq.$i
 done
 
 if [ "$mpc" = "yes" ]
 then
-  ./qapprove ../viff/data/geppval1 > ../viff/data/gepproof1
-  ./qapprove ../viff/data/geppval2 > ../viff/data/gepproof2
-  ./qapprove ../viff/data/geppval3 > ../viff/data/gepproof3
-  ./qapcombine ../viff/data/gepproof1 ../viff/data/gepproof2 ../viff/data/gepproof3 > ../viff/data/gepproof
+  $TOOLS/qapprove geppval1 > gepproof1
+  $TOOLS/qapprove geppval2 > gepproof2
+  $TOOLS/qapprove geppval3 > gepproof3
+  $TOOLS/qapcombine gepproof1 gepproof2 gepproof3 > gepproof
 else
-  ./qapprove > ../viff/data/gepproof
+  $TOOLS/qapprove > gepproof
 fi
 
-./qapver
+$TOOLS/qapver

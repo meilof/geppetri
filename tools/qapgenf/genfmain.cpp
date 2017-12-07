@@ -84,12 +84,12 @@ int main(int argc, char** argv) {
     }
 
     masterkey mkey;
-    ifstream mkeyfile("../viff/data/geppmasterkey");
+    ifstream mkeyfile("geppmasterkey");
     mkeyfile >> mkey;
     mkeyfile.close();
 
     modp s;
-    ifstream mskfile("../viff/data/geppmastersk");
+    ifstream mskfile("geppmastersk");
     mskfile >> s;
     mskfile.close();
 
