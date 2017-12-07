@@ -62,6 +62,10 @@ int main (int argc, char **argv) {
     string wires    = (argc >= 2 ? argv[1] : "geppval");
     wirevalt wirevals = readfromfile<wirevalt>(wires);
 
+    string pubwires = (argc >= 2 ? argv[1] : "geppio");
+    wirevalt pubvals = readfromfile<wirevalt>(pubwires);
+    for (auto const& it: pubvals) wirevals[it.first] = it.second;
+
     map<string,qap> qaps;
     map<string,qapek> qapeks;
 

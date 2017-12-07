@@ -145,10 +145,6 @@ void qap2key(const qap& theqap, const masterkey& mk, modp& s, qapek& ret1, qapvk
     int cur = 0;
     for (auto const& eq: theqap.eqs) interpolate(lagcofs[cur++], eq, vis, wis, yis);
 
-    ret2.constwire.g_rvvk = g10;
-    ret2.constwire.g_rwwk = g20;
-    ret2.constwire.g_ryyk = g10;
-
     // generate evaluation keys for all values
     unordered_set<string> done = unordered_set<string>();
     for (map<string,modp>::iterator iter = vis.begin(); iter != yis.end(); ) {
@@ -160,10 +156,12 @@ void qap2key(const qap& theqap, const masterkey& mk, modp& s, qapek& ret1, qapvk
 
             modp& vval = vis[iter->first], wval = wis[iter->first], yval = yis[iter->first];
 
-            if (iter->first == "one") {
-                ret2.constwire.g_rvvk = g1^(rv*vval);
-                ret2.constwire.g_rwwk = g2^(rw*wval);
-                ret2.constwire.g_ryyk = g1^(ry*yval);
+            if (iter->first == "one" || (iter->first.c_str()[0] == 'o' && iter->first.c_str()[1] == '_')) {
+                wirevk wvk;
+                wvk.g_rvvk = g1^(rv*vval);
+                wvk.g_rwwk = g2^(rw*wval);
+                wvk.g_ryyk = g1^(ry*yval);
+                ret2.pubinputs[iter->first] = wvk;
             } else {
                 wireek ek;
                 ek.g_rvvk   = g1^(rv*vval);

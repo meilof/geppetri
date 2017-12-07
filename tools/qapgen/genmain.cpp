@@ -99,11 +99,13 @@ int main(int argc, char** argv) {
     mkeyfile << mk;
     mkeyfile.close();
 
+    ofstream mkeyfile2("geppmasterkey.ver");
     if (smallsize != 0) {
-        ofstream mkeyfile("geppmasterkey.ver");
-        projectmk(mkeyfile, mk, smallsize+1);
-        mkeyfile.close();
+        projectmk(mkeyfile2, mk, smallsize+1);
+    } else {
+        mkeyfile2 << mk;
     }
+    mkeyfile2.close();
 
     ofstream msk("geppmastersk");
     msk << s;

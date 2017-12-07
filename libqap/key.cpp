@@ -189,7 +189,6 @@ std::istream& operator>>(std::istream& in, blockek& x) {
 
 std::ostream& operator<<(std::ostream& os, const qapvk& x) {
     os << "geppetri_qapvk [" << endl <<
-          "  " << x.constwire << endl <<
           "  " << x.g2alv << endl <<
           "  " << x.g1alw << endl <<
           "  " << x.g2aly << endl <<
@@ -197,6 +196,10 @@ std::ostream& operator<<(std::ostream& os, const qapvk& x) {
           "  " << x.g1bet << endl <<
           "  " << x.g2bet << endl;
     for (auto const& it: x.blocks) {
+        os << "  " << it.first << " " << it.second << endl;
+    }
+    os << "  ." << endl;
+    for (auto const& it: x.pubinputs) {
         os << "  " << it.first << " " << it.second << endl;
     }
     os << "]" << endl;
@@ -211,11 +214,15 @@ std::istream& operator>>(std::istream& in, qapvk& x) {
     char br; in >> br;
     if (br != '[') throw std::ios_base::failure((string("Bad qapvk: expected \"[\", got \"") + br + "\"").c_str());
 
-    in >> x.constwire >> x.g2alv >> x.g1alw >> x.g2aly >> x.g2ryt >> x.g1bet >> x.g2bet;
+    in >> x.g2alv >> x.g1alw >> x.g2aly >> x.g2ryt >> x.g1bet >> x.g2bet;
 
     string tok;
-    while (!(in>>tok).eof() && tok!="" && tok!="]")
+    while (!(in>>tok).eof() && tok!="" && tok!="]" && tok != ".")
         in >> x.blocks[tok];
+
+    while (!(in>>tok).eof() && tok!="" && tok!="]") {
+        in >> x.pubinputs[tok];
+    }
 
     if (tok != "]") throw std::ios_base::failure((string("Bad qapvk: expected \"]\", got \"") + br + "\"").c_str());
 

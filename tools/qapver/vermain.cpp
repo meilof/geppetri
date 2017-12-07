@@ -72,6 +72,9 @@ int main (int argc, char **argv) {
     string proofnm = "gepproof";
     ifstream prooff(proofnm);
 
+    string wires    = (argc >= 2 ? argv[1] : "geppio");
+    wirevalt wirevals = readfromfile<wirevalt>(wires);
+
     map<string,string> qap2type;
     map<string,qapproof> proofs;
 
@@ -95,7 +98,7 @@ int main (int argc, char **argv) {
 
             cerr << "Verifying " << name << " (" << type << ")" << " ";
             prooff >> proofs[name];
-            cerr << qapver(qapvks[type], proofs[name]) << endl;
+            cerr << qapver(qapvks[type], proofs[name], wirevals, name) << endl;
         } else if (tok=="[external]") {
             string fun; sched >> fun;
             string type = qap2type[fun];

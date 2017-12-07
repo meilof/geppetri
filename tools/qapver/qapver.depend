@@ -1,1 +1,76 @@
 # depslib dependency file v1.0
+1512650205 source:c:\users\310207395\documents\github\geppetri\tools\qapver\vermain.cpp
+	<fstream>
+	<map>
+	<set>
+	<time.h>
+	<libqap/base.h>
+	<libqap/key.h>
+	<libqap/prove.h>
+	<libqap/proof.h>
+	<libqap/verify.h>
+
+1489586621 c:\users\310207395\documents\github\geppetri\libqap\base.h
+	<gmpxx.h>
+	<bn.h>
+
+1489586639 c:\users\310207395\documents\github\geppetri\ate-pairing\include\bn.h
+	<stdexcept>
+	<vector>
+	"zm2.h"
+	<gmpxx.h>
+
+1489586639 c:\users\310207395\documents\github\geppetri\ate-pairing\include\zm2.h
+	"zm.h"
+	<gmpxx.h>
+
+1489586639 c:\users\310207395\documents\github\geppetri\ate-pairing\include\zm.h
+	<vector>
+	<string>
+	<cassert>
+	<string>
+	<stdio.h>
+	<stdlib.h>
+	<sstream>
+	<iomanip>
+	<stdexcept>
+	<algorithm>
+	<iostream>
+	<intrin.h>
+	<malloc.h>
+	<stdint.h>
+
+1512649294 c:\users\310207395\documents\github\geppetri\libqap\key.h
+	<map>
+	<unordered_set>
+	<gmpxx.h>
+	<bn.h>
+
+1489586621 c:\users\310207395\documents\github\geppetri\libqap\prove.h
+	"key.h"
+	"modp.h"
+	"proof.h"
+	"qap.h"
+
+1489586621 c:\users\310207395\documents\github\geppetri\libqap\modp.h
+	<gmpxx.h>
+	<bn.h>
+
+1489586621 c:\users\310207395\documents\github\geppetri\libqap\proof.h
+	<map>
+	<gmpxx.h>
+	<bn.h>
+	"modp.h"
+
+1489586621 c:\users\310207395\documents\github\geppetri\libqap\qap.h
+	<unordered_set>
+	<vector>
+	<map>
+	<gmpxx.h>
+	"modp.h"
+
+1512650199 c:\users\310207395\documents\github\geppetri\libqap\verify.h
+	"key.h"
+	"proof.h"
+	"qap.h"
+

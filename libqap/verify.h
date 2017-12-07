@@ -38,5 +38,5 @@
 
 bool qapblockvalid(const masterkey& mk, const datablock& db, int inputter);
 bool qapblockver(const masterkey& mk, const datablock& db, const blockvk& bvk, const blockproof& block);
-bool qapver(const qapvk& qvk, const qapproof& proof);
+bool qapver(const qapvk& qvk, const qapproof& proof, const wirevalt& pubwires, string prefix);
 

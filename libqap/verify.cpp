@@ -76,7 +76,7 @@ bool qapblockver(const masterkey& mk, const datablock& db, const blockvk& bvk, c
     return true;
 }
 
-bool qapver(const qapvk& qvk, const qapproof& proof) {
+bool qapver(const qapvk& qvk, const qapproof& proof, const wirevalt& pubwires, string prefix) {
     Fp12 e1, e2, e3;
 
 
@@ -109,9 +109,21 @@ bool qapver(const qapvk& qvk, const qapproof& proof) {
     opt_atePairing(e3, proof.p_rwx, qvk.g1bet);
     if (e1!=(e2*e3)) { cerr << "*** beta check failed" << endl;  }
 
-    opt_atePairing(e1, qvk.constwire.g_rwwk + proof.p_rwx, qvk.constwire.g_rvvk + proof.p_rvx);
+    Ec1 pub_rvx = g10;
+    Ec2 pub_rwx = g20;
+    Ec1 pub_ryx = g10;
+
+    for (auto const& it: qvk.pubinputs) {
+        modp val = it.first == "one" ? 1 : pubwires.at(prefix+"/"+it.first);
+        //cerr << "including " << it.first << "=" << val << endl;
+        pub_rvx += it.second.g_rvvk^val;
+        pub_rwx += it.second.g_rwwk^val;
+        pub_ryx += it.second.g_ryyk^val;
+    }
+
+    opt_atePairing(e1, pub_rwx + proof.p_rwx, pub_rvx + proof.p_rvx);
     opt_atePairing(e2, qvk.g2ryt, proof.p_h);
-    opt_atePairing(e3, g2, qvk.constwire.g_ryyk + proof.p_ryx);
+    opt_atePairing(e3, g2, pub_ryx + proof.p_ryx);
     if (e1!=(e2*e3)) { cerr << "*** divisibility check failed" << endl;  }
 
     return true;

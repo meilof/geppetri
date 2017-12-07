@@ -94,7 +94,7 @@ public:
 
 class qapvk {
 public:
-    wirevk constwire;
+    //wirevk constwire;
 
     Ec2 g2alv;
     Ec1 g1alw;
@@ -105,6 +105,7 @@ public:
     Ec2 g2bet;
 
     map<string,blockvk> blocks;
+    map<string,wirevk> pubinputs;
 };
 
 class qapek {
